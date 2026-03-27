@@ -1,20 +1,12 @@
-import json
-from asyncio import StreamWriter
 from typing import Any
 
 from domain.entities import Record
 from domain.use_cases import GetRecordsResult, NoDataToSaveError, SaveRecordsResult
-from infra.tcp_adapters.receiver import InvalidRequestError
 
-STOP_CHAR = "$"
+from adapters.exceptions import InvalidRequestError
 
 
-class TCPTransmitter:
-    async def transmit(self, writer: StreamWriter, data: Any) -> None:
-        response = json.dumps(self.present(data), ensure_ascii=False) + STOP_CHAR
-        writer.write(response.encode())
-        await writer.drain()
-
+class Presenter:
     def present(self, data: Any) -> dict[str, Any] | list[dict[str, Any]]:
         if isinstance(data, SaveRecordsResult):
             return {"status": "ok", "saved": data.saved}

@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 from datetime import datetime
 
@@ -5,6 +6,8 @@ import aiosqlite
 
 from domain.entities import Record
 from domain.ports import Repo
+
+logger = logging.getLogger(__name__)
 
 DB_PATH = "records.db"
 
